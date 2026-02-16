@@ -14,6 +14,7 @@ import InfographImage from './InfographImage';
 import { saveMessagesToStorage, Message } from '@/lib/chatStorage';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/routing';
+import { DEMO_AUDIO_URL, isVoiceDemoFastPathResponse } from '@/lib/voiceFastPath';
 
 interface ChatInterfaceProps {
   onClose: () => void;
@@ -149,17 +150,19 @@ export default function ChatInterface({ onClose, onExpand, threadId, messages, s
       if (process.env.NODE_ENV === 'development' && audioBase64.length > 0) {
         console.log('Voice response: audio_base64 length =', audioBase64.length);
       }
+      const useDemoFastPath = isVoiceDemoFastPathResponse(response);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'assistant',
-        content: audioBase64.length > 0 ? '' : (response.answer ?? ''),
+        content: useDemoFastPath || audioBase64.length > 0 ? '' : (response.answer ?? ''),
         timestamp: new Date().toLocaleTimeString(locale === 'ar' ? 'ar-SA' : 'en-US', {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
         }),
         meta: metaArray,
-        ...(audioBase64.length > 0 && { audioBase64 }),
+        ...(useDemoFastPath ? { audioUrl: DEMO_AUDIO_URL } : {}),
+        ...(audioBase64.length > 0 && !useDemoFastPath && { audioBase64 }),
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
@@ -395,11 +398,14 @@ export default function ChatInterface({ onClose, onExpand, threadId, messages, s
                       ) : null}
                       {(() => {
                         const audioBase64 = message.audioBase64 ?? (message as { audio_base64?: string }).audio_base64 ?? '';
-                        const isVoiceOnly = audioBase64.length > 0 && !message.content;
-                        return audioBase64.length > 0 ? (
+                        const audioUrl = message.audioUrl ?? '';
+                        const hasAssistantAudio = audioBase64.length > 0 || audioUrl.length > 0;
+                        const isVoiceOnly = hasAssistantAudio && !message.content;
+                        return hasAssistantAudio ? (
                           <div className={`min-h-[60px] shrink-0 ${isVoiceOnly ? 'w-fit' : 'w-full'} ${message.content ? 'mt-3' : ''}`} style={{ minHeight: 60 }}>
                             <AssistantAudioPlayer
                               audioBase64={audioBase64}
+                              audioUrl={audioUrl}
                               isRTL={isRTL}
                               compact
                               className="max-w-[280px]"

@@ -8,6 +8,7 @@ export interface Message {
   userAudioBase64?: string;
   voiceUrl?: string;
   audioBase64?: string;
+  audioUrl?: string;
   imageBase64?: string;
   meta?: {
     date: string;
@@ -47,4 +48,3 @@ export function clearMessagesFromStorage(): void {
     console.error('Failed to clear messages from storage:', error);
   }
 }
-
