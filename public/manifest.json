@@ -1,0 +1,16 @@
+{
+  "name": "Trends",
+  "short_name": "Trends",
+  "start_url": "/ar/chat",  
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
