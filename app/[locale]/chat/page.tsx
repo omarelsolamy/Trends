@@ -5,6 +5,8 @@ import ChatFullScreen from '@/components/ChatFullScreen';
 import { loadMessagesFromStorage, saveMessagesToStorage, Message } from '@/lib/chatStorage';
 import { useRouter } from '@/i18n/routing';
 
+export const runtime = 'edge';
+
 // Generate UUID v4
 function generateUUID(): string {
   return crypto.randomUUID();
