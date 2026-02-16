@@ -8,6 +8,7 @@ export interface Message {
   userAudioBase64?: string;
   voiceUrl?: string;
   audioBase64?: string;
+  audioUrl?: string;
   imageBase64?: string;
   meta?: {
     date: string;

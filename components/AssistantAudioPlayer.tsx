@@ -41,6 +41,7 @@ function getBarHeights(seed: number): number[] {
 
 interface AssistantAudioPlayerProps {
   audioBase64: string;
+  audioUrl?: string;
   mimeType?: string;
   className?: string;
   isRTL?: boolean;
@@ -60,6 +61,7 @@ const globalPlayedMessageIds = new Set<string>();
 
 export default function AssistantAudioPlayer({
   audioBase64: audioBase64Prop,
+  audioUrl,
   mimeType = 'audio/wav',
   className = '',
   isRTL = false,
@@ -71,7 +73,7 @@ export default function AssistantAudioPlayer({
 }: AssistantAudioPlayerProps) {
   const t = useTranslations('Chat');
   const audioBase64 = typeof audioBase64Prop === 'string' ? audioBase64Prop : String(audioBase64Prop ?? '');
-  const [objectUrl, setObjectUrl] = useState<string | null>(null);
+  const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -81,31 +83,39 @@ export default function AssistantAudioPlayer({
   const isSeekingRef = useRef(false);
   const cornerClass = isRTL ? 'rounded-tl-none' : 'rounded-tr-none';
 
-  const seed = objectUrl ? [...objectUrl].reduce((a, c) => a + c.charCodeAt(0), 0) : 0;
+  const seed = audioSrc ? [...audioSrc].reduce((a, c) => a + c.charCodeAt(0), 0) : 0;
   const barHeights = getBarHeights(seed);
   const progress = duration > 0 ? currentTime / duration : 0;
 
   useEffect(() => {
-    if (!audioBase64 || audioBase64.length === 0) return;
+    if (audioUrl) {
+      setError(null);
+      setAudioSrc(audioUrl);
+      return;
+    }
+    if (!audioBase64 || audioBase64.length === 0) {
+      setAudioSrc(null);
+      return;
+    }
     setError(null);
     try {
       const url = base64ToObjectUrl(audioBase64, mimeType);
-      setObjectUrl(url);
+      setAudioSrc(url);
       return () => {
         URL.revokeObjectURL(url);
-        setObjectUrl(null);
+        setAudioSrc(null);
       };
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to decode audio';
       console.error('AssistantAudioPlayer:', msg, e);
       setError(msg);
-      setObjectUrl(null);
+      setAudioSrc(null);
     }
-  }, [audioBase64, mimeType]);
+  }, [audioBase64, audioUrl, mimeType]);
 
   useEffect(() => {
     const el = audioRef.current;
-    if (!el || !objectUrl) return;
+    if (!el || !audioSrc) return;
     const onLoadedMetadata = () => setDuration(el.duration);
     const onTimeUpdate = () => {
       if (!isSeekingRef.current) setCurrentTime(el.currentTime);
@@ -129,7 +139,7 @@ export default function AssistantAudioPlayer({
       el.removeEventListener('pause', onPause);
       el.removeEventListener('ended', onEnded);
     };
-  }, [objectUrl]);
+  }, [audioSrc]);
 
   useEffect(() => {
     if (currentPlayingId && messageId && currentPlayingId !== messageId && isPlaying) {
@@ -147,7 +157,7 @@ export default function AssistantAudioPlayer({
     // If we have a messageId, check if it's already been played globally (pseudo-global via module scope if we moved it out, 
     // but here we can't easily share state without context. 
     // Actually, a simple module-level Set outside the component is better.)
-    if (autoPlay && objectUrl && audioRef.current && !hasAutoPlayed.current) {
+    if (autoPlay && audioSrc && audioRef.current && !hasAutoPlayed.current) {
       if (messageId && globalPlayedMessageIds.has(messageId)) {
         hasAutoPlayed.current = true;
         return;
@@ -169,7 +179,7 @@ export default function AssistantAudioPlayer({
         el.addEventListener('canplay', playAudio, { once: true });
       }
     }
-  }, [objectUrl, autoPlay, messageId, onPlay]);
+  }, [audioSrc, autoPlay, messageId, onPlay]);
 
   const handlePlayPause = () => {
     const el = audioRef.current;
@@ -225,7 +235,7 @@ export default function AssistantAudioPlayer({
     );
   }
 
-  if (!objectUrl) {
+  if (!audioSrc) {
     return (
       <div className={`text-sm text-[#135662] ${bubbleBase} ${cornerClass} mt-2 flex items-center ${className}`} role="status">
         <span className="animate-pulse">Loading audio…</span>
@@ -235,7 +245,7 @@ export default function AssistantAudioPlayer({
 
   return (
     <div className={`${bubbleBase} ${cornerClass} py-2 sm:py-2.5 w-fit max-w-full ${compact ? 'px-3' : 'px-4 sm:px-6'} ${className}`} style={{ minHeight: 52 }}>
-      <audio ref={audioRef} key={objectUrl} src={objectUrl} preload="metadata" className="hidden" aria-hidden />
+      <audio ref={audioRef} key={audioSrc} src={audioSrc ?? undefined} preload="metadata" className="hidden" aria-hidden />
       <div className="flex flex-col gap-2 w-full min-w-[140px] max-w-[280px] sm:max-w-[320px]" role="article" aria-label={t('voiceNote.ariaBubble')}>
         <div className="inline-flex items-center gap-3 w-full">
           <button
