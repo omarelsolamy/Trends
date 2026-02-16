@@ -1,0 +1,231 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Arabic text - apply Cairo font when html has lang="ar" */
+html[lang="ar"] body {
+  font-family: var(--font-cairo), Arial, Helvetica, sans-serif !important;
+}
+
+html[lang="ar"],
+[lang="ar"],
+.arabic {
+  font-family: var(--font-cairo), Arial, Helvetica, sans-serif;
+}
+
+/* Swiper Pagination Custom Styles */
+.hero-swiper .swiper-pagination {
+  bottom: 30px !important;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  width: 12px;
+  height: 12px;
+  background: white;
+}
+
+/* Chat Button Ripple Animation */
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.animate-pulse-slow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 46px;
+  background: rgba(19, 86, 98, 0.4);
+  animation: ripple 2s ease-out infinite;
+  z-index: -1;
+}
+
+.animate-pulse-slow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 46px;
+  background: rgba(19, 86, 98, 0.4);
+  animation: ripple 2s ease-out infinite;
+  animation-delay: 1s;
+  z-index: -1;
+}
+
+/* Markdown Styling for Chat Messages */
+.prose {
+  --tw-prose-body: #0D1019;
+  --tw-prose-headings: #1F263D;
+  --tw-prose-bold: #1F263D;
+  --tw-prose-links: #135662;
+}
+
+.prose p {
+  margin-top: 0;
+  margin-bottom: 0.75em;
+}
+
+.prose p:last-child {
+  margin-bottom: 0;
+}
+
+.prose ul, .prose ol {
+  margin-top: 0.5em;
+  margin-bottom: 0.75em;
+}
+
+.prose li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+/* Word breaking for long URLs in chat */
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.prose a {
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose code {
+  background: #f5f5f5;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.prose pre {
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.prose a {
+  color: #135662;
+  text-decoration: underline;
+  font-weight: 500;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.prose a:hover {
+  color: #0d4248;
+}
+
+/* Word breaking for long URLs and text in chat */
+.overflow-wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Typing Indicator Animation */
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Custom Scrollbar for Chat Textarea - Subtle and elegant */
+.chat-textarea {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+}
+
+.chat-textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-textarea::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.chat-textarea::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  transition: background 0.2s ease;
+}
+
+.chat-textarea::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* Make scrollbar more visible when scrolling or hovering */
+.chat-textarea:hover::-webkit-scrollbar-thumb,
+.chat-textarea:focus::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* Voice note recording bars - subtle bounce animation */
+@keyframes voice-recording-bounce {
+  0%, 100% { transform: scaleY(0.4); }
+  50% { transform: scaleY(1); }
+}
+
+.voice-recording-bar {
+  transform-origin: bottom;
+  animation: voice-recording-bounce 0.8s ease-in-out infinite;
+}
+
+.voice-recording-bar:nth-child(1) { animation-delay: 0s; }
+.voice-recording-bar:nth-child(2) { animation-delay: 0.1s; }
+.voice-recording-bar:nth-child(3) { animation-delay: 0.2s; }
+.voice-recording-bar:nth-child(4) { animation-delay: 0.05s; }
+.voice-recording-bar:nth-child(5) { animation-delay: 0.15s; }
+.voice-recording-bar:nth-child(6) { animation-delay: 0.25s; }
+.voice-recording-bar:nth-child(7) { animation-delay: 0.1s; }
+.voice-recording-bar:nth-child(8) { animation-delay: 0.2s; }
+.voice-recording-bar:nth-child(9) { animation-delay: 0.05s; }
+.voice-recording-bar:nth-child(10) { animation-delay: 0.15s; }
+.voice-recording-bar:nth-child(11) { animation-delay: 0.25s; }
+.voice-recording-bar:nth-child(12) { animation-delay: 0.2s; }
