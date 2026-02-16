@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Cairo } from "next/font/google";
 import { routing } from '@/i18n/routing';
 import "../globals.css";
+export const runtime = 'edge';
 
 const cairo = Cairo({
   variable: "--font-cairo",
