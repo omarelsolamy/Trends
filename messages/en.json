@@ -1,0 +1,102 @@
+{
+  "Navbar": {
+    "aboutTrends": "About TRENDS",
+    "globalOffices": "Global Offices",
+    "research": "Research",
+    "publications": "Publications",
+    "advisory": "Advisory",
+    "globalBarometer": "Global Barometer",
+    "training": "Training",
+    "programs": "Programs",
+    "events": "Events",
+    "publishWithUs": "Publish with Us",
+    "contactUs": "Contact Us",
+    "language": "AR"
+  },
+  "Chat": {
+    "smartAssistant": "Smart Assistant",
+    "alwaysHereToHelp": "Always here to help",
+    "askAnything": "Ask anything",
+    "newChat": "New Chat",
+    "history": "History",
+    "guest": "Guest",
+    "viewOnTrendsResearch": "View on TRENDS Research",
+    "expandChat": "Expand chat",
+    "pleaseWaitForResponse": "Please wait for response",
+    "pleaseWaitForAIResponse": "Please wait for the AI response to complete",
+    "expandToFullScreen": "Expand to full screen",
+    "sendMessage": "Send message",
+    "failedToGetResponse": "Failed to get response. Please try again.",
+    "minimizeChat": "Minimize chat",
+    "sources": "Sources",
+    "infograph": {
+      "toggle": "Include infograph",
+      "on": "Infograph on",
+      "off": "Infograph off",
+      "aria": "Toggle infograph for response",
+      "clickToEnlarge": "Click to enlarge"
+    },
+    "voiceNote": {
+      "record": "Record voice note",
+      "recording": "Recording voice note",
+      "cancel": "Cancel recording",
+      "send": "Send voice note",
+      "play": "Play",
+      "pause": "Pause",
+      "ariaBubble": "Voice note message",
+      "micError": "Mic unavailable"
+    },
+    "historyTopics": {
+      "oilPricesRise": "Oil Prices Rise",
+      "globalInflation2025": "Global Inflation 2025",
+      "digitalCurrencies": "Digital Currencies",
+      "energyTransition": "Energy Transition",
+      "aiInPolicyMaking": "AI in Policy-Making",
+      "middleEastStability": "Middle East Stability"
+    }
+  },
+  "Common": {
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error"
+  },
+  "Metadata": {
+    "title": "TRENDS Research & Advisory",
+    "description": "TRENDS Research & Advisory strives to present an insightful and informed view. We look forward to exploring exciting possibilities with you!"
+  },
+  "Articles": {
+    "categories": {
+      "analysis": "ANALYSIS",
+      "snapshots": "SNAPSHOTS",
+      "elections": "Elections"
+    },
+    "featured": {
+      "article1": {
+        "headline": "Deconstructing the Core Ideas of Extremism",
+        "author": "Research Team",
+        "date": "20 Oct 2025"
+      },
+      "article2": {
+        "headline": "The Upcoming Trump-Xi Jinping Meeting and Its Implications",
+        "date": "28 Oct 2025"
+      }
+    },
+    "hero": {
+      "slide1": {
+        "tag": "Snapshots",
+        "headline": "The Upcoming Trump-Xi Jinping Meeting and Its Implications",
+        "date": "28 Oct 2025"
+      },
+      "slide2": {
+        "tag": "Elections",
+        "headline": "Ivory Coast Presidential Election: Key Candidates and Outlook",
+        "date": "25 Oct 2025"
+      },
+      "slide3": {
+        "tag": "Analysis",
+        "headline": "Deconstructing the Core Ideas of Extremism",
+        "date": "20 Oct 2025"
+      }
+    }
+  }
+}

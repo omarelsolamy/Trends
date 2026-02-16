@@ -1,0 +1,102 @@
+{
+  "Navbar": {
+    "aboutTrends": "عن تريندز",
+    "globalOffices": "المكاتب العالمية",
+    "research": "البحوث",
+    "publications": "المنشورات",
+    "advisory": "الاستشارات",
+    "globalBarometer": "المقياس العالمي",
+    "training": "التدريب",
+    "programs": "البرامج",
+    "events": "الفعاليات",
+    "publishWithUs": "النشر معنا",
+    "contactUs": "اتصل بنا",
+    "language": "EN"
+  },
+  "Chat": {
+    "smartAssistant": "المساعد الذكي",
+    "alwaysHereToHelp": "دائماً هنا للمساعدة",
+    "askAnything": "اطرح أي سؤال",
+    "newChat": "محادثة جديدة",
+    "history": "السجل",
+    "guest": "زائر",
+    "viewOnTrendsResearch": "عرض على تريندز للأبحاث",
+    "expandChat": "توسيع المحادثة",
+    "pleaseWaitForResponse": "يرجى انتظار الرد",
+    "pleaseWaitForAIResponse": "يرجى انتظار اكتمال رد المساعد",
+    "expandToFullScreen": "توسيع إلى ملء الشاشة",
+    "sendMessage": "إرسال رسالة",
+    "failedToGetResponse": "فشل في الحصول على الرد. يرجى المحاولة مرة أخرى.",
+    "minimizeChat": "تصغير المحادثة",
+    "sources": "المصادر",
+    "infograph": {
+      "toggle": "تضمين إنفوجراف",
+      "on": "إنفوجراف مفعل",
+      "off": "إنفوجراف غير مفعل",
+      "aria": "تبديل إنفوجراف للرد",
+      "clickToEnlarge": "انقر للتكبير"
+    },
+    "voiceNote": {
+      "record": "تسجيل رسالة صوتية",
+      "recording": "جاري التسجيل",
+      "cancel": "إلغاء التسجيل",
+      "send": "إرسال الرسالة الصوتية",
+      "play": "تشغيل",
+      "pause": "إيقاف",
+      "ariaBubble": "رسالة صوتية",
+      "micError": "الميكروفون غير متاح"
+    },
+    "historyTopics": {
+      "oilPricesRise": "ارتفاع أسعار النفط",
+      "globalInflation2025": "التضخم العالمي 2025",
+      "digitalCurrencies": "العملات الرقمية",
+      "energyTransition": "التحول في مجال الطاقة",
+      "aiInPolicyMaking": "الذكاء الاصطناعي في صنع السياسات",
+      "middleEastStability": "استقرار الشرق الأوسط"
+    }
+  },
+  "Common": {
+    "close": "إغلاق",
+    "loading": "جاري التحميل...",
+    "error": "خطأ"
+  },
+  "Metadata": {
+    "title": "تريندز للبحوث والاستشارات",
+    "description": "تسعى تريندز للبحوث والاستشارات إلى تقديم رؤية ثاقبة ومستنيرة. نتطلع إلى استكشاف إمكانيات مثيرة معك!"
+  },
+  "Articles": {
+    "categories": {
+      "analysis": "تحليل",
+      "snapshots": "لقطات",
+      "elections": "انتخابات"
+    },
+    "featured": {
+      "article1": {
+        "headline": "تفكيك الأفكار الأساسية للتطرف",
+        "author": "فريق البحث",
+        "date": "20 أكتوبر 2025"
+      },
+      "article2": {
+        "headline": "الاجتماع القادم بين ترامب وشي جين بينغ وآثاره",
+        "date": "28 أكتوبر 2025"
+      }
+    },
+    "hero": {
+      "slide1": {
+        "tag": "لقطات",
+        "headline": "الاجتماع القادم بين ترامب وشي جين بينغ وآثاره",
+        "date": "28 أكتوبر 2025"
+      },
+      "slide2": {
+        "tag": "انتخابات",
+        "headline": "الانتخابات الرئاسية في ساحل العاج: المرشحون الرئيسيون والتوقعات",
+        "date": "25 أكتوبر 2025"
+      },
+      "slide3": {
+        "tag": "تحليل",
+        "headline": "تفكيك الأفكار الأساسية للتطرف",
+        "date": "20 أكتوبر 2025"
+      }
+    }
+  }
+}
