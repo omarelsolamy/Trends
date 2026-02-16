@@ -12,9 +12,6 @@ const cairo = Cairo({
   weight: ["400", "500", "600", "700"],
 });
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
