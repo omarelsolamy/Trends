@@ -15,6 +15,31 @@ import { saveMessagesToStorage } from '@/lib/chatStorage';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/routing';
 
+const SPECIAL_VOICE_QUESTION = 'ما جهود الصين في تطوير قدراتها في الذكاء الاصطناعي, وهل تتفوق على أمريكيا في هذا المجال؟';
+const SPECIAL_VOICE_AUDIO_URL = '/assets/ElevenLabs_2026-02-16T12_31_48_Ghawi - Professional and Dynamic_pvc_sp94_s47_sb42_se49_b_m2.mp3';
+
+function normalizeArabicText(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[ً-ٰٟ]/g, '')
+    .replace(/[آأإ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/[‏‎]/g, '')
+    .replace(/[،؟,.!؟]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function isSpecialVoiceQuestion(text: string): boolean {
+  if (!text) return false;
+  const normalizedIncoming = normalizeArabicText(text);
+  const normalizedTarget = normalizeArabicText(SPECIAL_VOICE_QUESTION);
+  return normalizedIncoming === normalizedTarget;
+}
+
 interface MetaData {
   date: string;
   title: string;
@@ -32,6 +57,7 @@ interface Message {
   userAudioBase64?: string;
   voiceUrl?: string;
   audioBase64?: string;
+  audioUrl?: string;
   imageBase64?: string;
   meta?: MetaData[];
 }
@@ -168,13 +194,20 @@ export default function ChatFullScreen({ threadId, messages, setMessages, isLoad
         (response as { audioBase64?: string }).audioBase64;
       const audioBase64 =
         typeof audioBase64Raw === 'string' ? audioBase64Raw.trim() : '';
+      const transcriptRaw =
+        (response as { question?: string; transcript?: string; transcribed_text?: string }).question ??
+        (response as { transcript?: string }).transcript ??
+        (response as { transcribed_text?: string }).transcribed_text ??
+        '';
+      const transcript = typeof transcriptRaw === 'string' ? transcriptRaw.trim() : '';
+      const useSpecialAudio = isSpecialVoiceQuestion(transcript);
       if (process.env.NODE_ENV === 'development' && audioBase64.length > 0) {
         console.log('Voice response: audio_base64 length =', audioBase64.length);
       }
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'assistant',
-        content: audioBase64.length > 0 ? '' : (response.answer ?? ''),
+        content: useSpecialAudio || audioBase64.length > 0 ? '' : (response.answer ?? ''),
         timestamp: new Date().toLocaleTimeString(timeLocale, {
           hour: '2-digit',
           minute: '2-digit',
@@ -182,6 +215,7 @@ export default function ChatFullScreen({ threadId, messages, setMessages, isLoad
         }),
         meta: metaArray,
         ...(audioBase64.length > 0 && { audioBase64 }),
+        ...(useSpecialAudio && { audioUrl: SPECIAL_VOICE_AUDIO_URL }),
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
@@ -419,11 +453,13 @@ export default function ChatFullScreen({ threadId, messages, setMessages, isLoad
 
                   {(() => {
                     const audioBase64 = message.audioBase64 ?? (message as any).audio_base64 ?? '';
-                    if (!audioBase64) return null;
+                    const audioUrl = message.audioUrl ?? '';
+                    if (!audioBase64 && !audioUrl) return null;
                     return (
                       <div className={`min-h-[60px] shrink-0 w-fit ${message.content ? 'mt-3' : ''}`}>
                         <AssistantAudioPlayer
                           audioBase64={audioBase64}
+                          audioUrl={audioUrl || undefined}
                           isRTL={isRTL}
                           compact={false}
                           className="max-w-[90vw]"
