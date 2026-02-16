@@ -40,7 +40,8 @@ function getBarHeights(seed: number): number[] {
 }
 
 interface AssistantAudioPlayerProps {
-  audioBase64: string;
+  audioBase64?: string;
+  audioUrl?: string;
   mimeType?: string;
   className?: string;
   isRTL?: boolean;
@@ -60,6 +61,7 @@ const globalPlayedMessageIds = new Set<string>();
 
 export default function AssistantAudioPlayer({
   audioBase64: audioBase64Prop,
+  audioUrl,
   mimeType = 'audio/wav',
   className = '',
   isRTL = false,
@@ -86,8 +88,17 @@ export default function AssistantAudioPlayer({
   const progress = duration > 0 ? currentTime / duration : 0;
 
   useEffect(() => {
-    if (!audioBase64 || audioBase64.length === 0) return;
     setError(null);
+
+    if (audioUrl) {
+      setObjectUrl(audioUrl);
+      return () => {
+        setObjectUrl(null);
+      };
+    }
+
+    if (!audioBase64 || audioBase64.length === 0) return;
+
     try {
       const url = base64ToObjectUrl(audioBase64, mimeType);
       setObjectUrl(url);
@@ -101,7 +112,7 @@ export default function AssistantAudioPlayer({
       setError(msg);
       setObjectUrl(null);
     }
-  }, [audioBase64, mimeType]);
+  }, [audioBase64, audioUrl, mimeType]);
 
   useEffect(() => {
     const el = audioRef.current;

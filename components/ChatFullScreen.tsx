@@ -14,6 +14,7 @@ import InfographImage from './InfographImage';
 import { saveMessagesToStorage } from '@/lib/chatStorage';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/routing';
+import { DEMO_AUDIO_URL, isVoiceDemoFastPathResponse } from '@/lib/voiceFastPath';
 
 interface MetaData {
   date: string;
@@ -32,6 +33,7 @@ interface Message {
   userAudioBase64?: string;
   voiceUrl?: string;
   audioBase64?: string;
+  audioUrl?: string;
   imageBase64?: string;
   meta?: MetaData[];
 }
@@ -171,17 +173,19 @@ export default function ChatFullScreen({ threadId, messages, setMessages, isLoad
       if (process.env.NODE_ENV === 'development' && audioBase64.length > 0) {
         console.log('Voice response: audio_base64 length =', audioBase64.length);
       }
+      const useDemoFastPath = isVoiceDemoFastPathResponse(response);
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: 'assistant',
-        content: audioBase64.length > 0 ? '' : (response.answer ?? ''),
+        content: useDemoFastPath || audioBase64.length > 0 ? '' : (response.answer ?? ''),
         timestamp: new Date().toLocaleTimeString(timeLocale, {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
         }),
         meta: metaArray,
-        ...(audioBase64.length > 0 && { audioBase64 }),
+        ...(useDemoFastPath ? { audioUrl: DEMO_AUDIO_URL } : {}),
+        ...(audioBase64.length > 0 && !useDemoFastPath && { audioBase64 }),
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
@@ -419,11 +423,13 @@ export default function ChatFullScreen({ threadId, messages, setMessages, isLoad
 
                   {(() => {
                     const audioBase64 = message.audioBase64 ?? (message as any).audio_base64 ?? '';
-                    if (!audioBase64) return null;
+                    const audioUrl = message.audioUrl ?? '';
+                    if (!audioBase64 && !audioUrl) return null;
                     return (
                       <div className={`min-h-[60px] shrink-0 w-fit ${message.content ? 'mt-3' : ''}`}>
                         <AssistantAudioPlayer
                           audioBase64={audioBase64}
+                          audioUrl={audioUrl}
                           isRTL={isRTL}
                           compact={false}
                           className="max-w-[90vw]"
